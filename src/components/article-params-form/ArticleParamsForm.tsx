@@ -158,7 +158,14 @@ export const ArticleParamsForm = ({
 						<Button
 							title='Сбросить'
 							htmlType='button'
-							onClick={() => onReset()}
+							onClick={() => {
+								setSelectedContentWidth(defaultArticleState.contentWidth);
+								setSelectedBackgroundColor(defaultArticleState.backgroundColor);
+								setSelectedFontColor(defaultArticleState.fontColor);
+								setSelectedFontSize(defaultArticleState.fontSizeOption);
+								setSelectedFontFamily(defaultArticleState.fontFamilyOption);
+								onReset();
+							}}
 							type='clear'
 						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
