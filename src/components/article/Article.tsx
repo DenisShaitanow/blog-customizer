@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Dispatch, SetStateAction } from 'react';
 
 // Сообщаем вебпаку, что этот файл использует это изображение.
 import plane from 'src/images/plane.png';
@@ -6,9 +7,20 @@ import { Text } from 'src/ui/text';
 
 import styles from './Article.module.scss';
 
-export const Article = () => {
+interface Props {
+	isOpenSideBar: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export const Article = ({ isOpenSideBar, setIsOpen }: Props) => {
 	return (
-		<article className={clsx(styles.article)}>
+		<article
+			className={clsx(styles.article)}
+			onClick={() => {
+				if (isOpenSideBar) {
+					setIsOpen(!isOpenSideBar);
+				}
+			}}>
 			<Text as='h1' size={45} weight={800} uppercase dynamicLite>
 				Портрет Западной Швейцарии
 			</Text>

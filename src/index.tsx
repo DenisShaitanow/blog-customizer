@@ -21,7 +21,7 @@ type PageStyle = {
 
 const App = () => {
 	const [pageStyle, setPageStyle] = useState(defaultArticleState);
-
+	const [isOpenSideBar, setIsOpen] = useState(false);
 	return (
 		<main
 			className={styles.main}
@@ -41,9 +41,11 @@ const App = () => {
 				onReset={() => {
 					setPageStyle(defaultArticleState);
 				}} // Сбрасывает стили
+				isOpenSideBar={isOpenSideBar}
+				setIsOpen={setIsOpen}
 			/>
 
-			<Article />
+			<Article isOpenSideBar={isOpenSideBar} setIsOpen={setIsOpen} />
 		</main>
 	);
 };

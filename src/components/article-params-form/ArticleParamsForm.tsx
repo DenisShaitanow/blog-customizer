@@ -1,6 +1,6 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { Select } from '../../ui/select/Select';
 import { RadioGroup } from '../../ui/radio-group/RadioGroup';
 import { Separator } from '../../ui/separator/Separator';
@@ -19,6 +19,8 @@ import styles from './ArticleParamsForm.module.scss';
 interface Props {
 	onApply: (style: StateForm) => void;
 	onReset: () => void;
+	isOpenSideBar: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type StateForm = {
@@ -29,8 +31,12 @@ type StateForm = {
 	backgroundColor: OptionType;
 };
 
-export const ArticleParamsForm = ({ onApply, onReset }: Props) => {
-	const [isOpen, setIsOpen] = useState(false);
+export const ArticleParamsForm = ({
+	onApply,
+	onReset,
+	isOpenSideBar,
+	setIsOpen,
+}: Props) => {
 	const [stateForm, setStateForm] = useState<StateForm>({
 		fontFamilyOption: defaultArticleState.fontFamilyOption,
 		fontSizeOption: defaultArticleState.fontSizeOption,
@@ -38,10 +44,6 @@ export const ArticleParamsForm = ({ onApply, onReset }: Props) => {
 		contentWidth: defaultArticleState.contentWidth,
 		backgroundColor: defaultArticleState.backgroundColor,
 	});
-
-	const openSideBar = () => {
-		setIsOpen(!isOpen);
-	};
 
 	const [selectedFontSize, setSelectedFontSize] = useState<OptionType>(
 		defaultArticleState.fontSizeOption
@@ -106,10 +108,15 @@ export const ArticleParamsForm = ({ onApply, onReset }: Props) => {
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={openSideBar} />
+			<ArrowButton
+				isOpen={isOpenSideBar}
+				onClick={() => {
+					setIsOpen(!isOpenSideBar);
+				}}
+			/>
 			<aside
 				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
+					isOpenSideBar ? styles.container_open : ''
 				}`}>
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<Select
