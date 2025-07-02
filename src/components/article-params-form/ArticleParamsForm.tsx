@@ -159,6 +159,13 @@ export const ArticleParamsForm = ({
 							title='Сбросить'
 							htmlType='button'
 							onClick={() => {
+								setStateForm({
+									fontFamilyOption: defaultArticleState.fontFamilyOption,
+									fontSizeOption: defaultArticleState.fontSizeOption,
+									fontColor: defaultArticleState.fontColor,
+									contentWidth: defaultArticleState.contentWidth,
+									backgroundColor: defaultArticleState.backgroundColor,
+								});
 								setSelectedContentWidth(defaultArticleState.contentWidth);
 								setSelectedBackgroundColor(defaultArticleState.backgroundColor);
 								setSelectedFontColor(defaultArticleState.fontColor);
