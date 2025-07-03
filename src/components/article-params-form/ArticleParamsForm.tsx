@@ -1,9 +1,10 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, useRef } from 'react';
 import { Select } from '../../ui/select/Select';
 import { RadioGroup } from '../../ui/radio-group/RadioGroup';
 import { Separator } from '../../ui/separator/Separator';
+import { useOutsideClickClose } from '../../ui/select/hooks/useOutsideClickClose';
 import {
 	fontFamilyOptions,
 	fontSizeOptions,
@@ -19,8 +20,6 @@ import styles from './ArticleParamsForm.module.scss';
 interface Props {
 	onApply: (style: StateForm) => void;
 	onReset: () => void;
-	isOpenSideBar: boolean;
-	setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type StateForm = {
@@ -31,18 +30,22 @@ type StateForm = {
 	backgroundColor: OptionType;
 };
 
-export const ArticleParamsForm = ({
-	onApply,
-	onReset,
-	isOpenSideBar,
-	setIsOpen,
-}: Props) => {
+export const ArticleParamsForm = ({ onApply, onReset }: Props) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const rootRef = useRef<HTMLDivElement>(null);
 	const [stateForm, setStateForm] = useState<StateForm>({
 		fontFamilyOption: defaultArticleState.fontFamilyOption,
 		fontSizeOption: defaultArticleState.fontSizeOption,
 		fontColor: defaultArticleState.fontColor,
 		contentWidth: defaultArticleState.contentWidth,
 		backgroundColor: defaultArticleState.backgroundColor,
+	});
+
+	useOutsideClickClose({
+		isOpen,
+		rootRef,
+		onChange: setIsOpen,
+		onClose: () => setIsOpen(false),
 	});
 
 	const [selectedFontSize, setSelectedFontSize] = useState<OptionType>(
@@ -109,14 +112,15 @@ export const ArticleParamsForm = ({
 	return (
 		<>
 			<ArrowButton
-				isOpen={isOpenSideBar}
+				isOpen={isOpen}
 				onClick={() => {
-					setIsOpen(!isOpenSideBar);
+					setIsOpen(!isOpen);
 				}}
 			/>
 			<aside
+				ref={rootRef}
 				className={`${styles.container} ${
-					isOpenSideBar ? styles.container_open : ''
+					isOpen ? styles.container_open : ''
 				}`}>
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<Select
